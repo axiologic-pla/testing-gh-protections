@@ -45,6 +45,6 @@ jobs:
           
           git add .
           git commit -m "File ${{ inputs.outputFileName }}.md - Generated at $current_date"
-          git push origin :main
+          git push origin testing:main
 
         shell: bash
