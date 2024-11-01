@@ -32,8 +32,6 @@ jobs:
           git config --global user.email "your@email.com"
           git config --global user.name "${{ github.actor }}"
           
-          git pull origin main
-          
           # Generate random number between 1 and 1000
           random_number=$((RANDOM % 1000 + 1))
           
@@ -47,6 +45,6 @@ jobs:
           
           git add .
           git commit -m "File ${{ inputs.outputFileName }}.md - Generated at $current_date"
-          git push origin main
+          git push origin :main
 
         shell: bash
