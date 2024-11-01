@@ -27,6 +27,11 @@ jobs:
           GITHUB_TOKEN=${{ env.CICD_DEPLOYMENT_TOKEN }}
           filename=${{ inputs.outputFileName }}
           
+          git config --global user.email "your@email.com"
+          git config --global user.name "${{ github.actor }}"
+          
+          git pull origin main
+          
           # Generate random number between 1 and 1000
           random_number=$((RANDOM % 1000 + 1))
           
@@ -37,10 +42,9 @@ jobs:
           
           current_date=$(date +"%d %B %Y")
           ls -a
-          git config --global user.email "your@email.com"
-          git config --global user.name "${{ github.actor }}"
+          
           git add .
           git commit -m "File ${{ inputs.outputFileName }}.md - Generated at $current_date"
-          git push
+          git push origin main
 
         shell: bash
