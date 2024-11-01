@@ -1,0 +1,46 @@
+name: 'Testing'
+
+on:
+  workflow_dispatch:
+    inputs:
+      outputFileName:
+        description: 'Enter how the file should be called.'
+        default: 'README'
+
+env:
+  CICD_DEPLOYMENT_TOKEN: ${{ secrets.CICD_DEPLOYMENT_TOKEN }}
+
+jobs:
+  GetOrganizationInfo:
+    name: 'GetOrganizationInfo'
+    runs-on: ubuntu-22.04
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4.1.3
+      - run: |
+          ORG_NAME=${{ github.repository_owner }}
+          GITHUB_TOKEN=${{ env.CICD_DEPLOYMENT_TOKEN }}
+          filename=${{ inputs.outputFileName }}
+          
+          # Generate random number between 1 and 1000
+          random_number=$((RANDOM % 1000 + 1))
+          
+          # Create markdown content with random values
+          markdown_content="# Test File\n\nRandom Number: ${random_number}\nGenerated at: $(date)"
+          
+          echo -e "$markdown_content" >> "$filename.md"
+          
+          current_date=$(date +"%d %B %Y")
+          ls -a
+          git config --global user.email "your@email.com"
+          git config --global user.name "${{ github.actor }}"
+          git add .
+          git commit -m "File ${{ inputs.outputFileName }}.md - Generated at $current_date"
+          git push
+
+        shell: bash
